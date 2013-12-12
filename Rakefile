@@ -1,11 +1,11 @@
 ## Crafted (c) 2013 by ZoatWorks Software LLC.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA09
-## Date     : 2013-11-08
+## Version  : PA10
+## Date     : 2013-12-12
 ## Project  : Project 2013 TODAY Automation - Brazil
-## Reference: ruby 1.9.3p448 (2013-06-27) [i386-cygwin]
-## Rake     : rake 0.8.7
+## Reference: ruby 1.9.3p448 (2013-06-27) [x86_64-cygwin]
+## Rake     : rake (10.0.4)
 ##
 ## Purpose  : Develop a Rake system in order to help TODAY management directory
 ##            for projects.
@@ -14,12 +14,8 @@ require 'rake'
 require 'rainbow'
 
 require 'yaml'
-# require 'find'
-# require 'win32ole'
-# require 'win32/clipboard'
-# include Win32
 
-USERPATH="/home/eronogu"
+USERPATH="/home/" + ENV['USERNAME']
 TODAY_TEMPLATES="#{USERPATH}/TODAY_Templates"
 TODAY_ARCHIVE="#{USERPATH}/TODAY_Archive"
 
