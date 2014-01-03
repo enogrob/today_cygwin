@@ -226,20 +226,20 @@ task :today_archive_unselect, [:a_todayname] do |t, args|
   @today_projectname = today_data['ProjectName'] || 'projectname'
   @today_name = today_data['TodayName'] || 'todayname'
   if File.exists?("#{TODAY}/*.log") then
-  	system %{
+    system %{
     cd "#{TODAY}";
     cp *.log "#{TODAY_ARCHIVE}/#{@today_name}";
     ls -r1 *.log | tail +$((2)) | xargs rm;
     ls -r1 *.log | head -1 | xargs cp /dev/null;
     rm -f current_app;
     rm -f "#{@today_projectname}"
-  	}
+    }
   else
-  system %{
+    system %{
     cd "#{TODAY}";
     rm -f current_app;
     rm -f "#{@today_projectname}"
-  }
+    }
   end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
@@ -320,11 +320,11 @@ task :today_cleanup do
     ls -r1 *.log | head -1 | xargs cp /dev/null  
   }
   else
-  	system %{
+    system %{
     cd "#{TODAY}";
     find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
     find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-gemset' -not -name '.ruby-version' | xargs rm
-  	}
+    }
   end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
