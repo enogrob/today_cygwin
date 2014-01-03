@@ -1,8 +1,8 @@
 ## Crafted (c) 2013 by ZoatWorks Software LLC.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA10
-## Date     : 2013-12-12
+## Version  : PA11
+## Date     : 2014-01-03
 ## Project  : Project 2013 TODAY Automation - Brazil
 ## Reference: ruby 1.9.3p448 (2013-06-27) [x86_64-cygwin]
 ## Rake     : rake (10.0.4)
@@ -37,7 +37,7 @@ task :today_start, [:a_projecttype, :a_projectname] do |t, args|
     args.with_defaults(:a_projecttype => "projecttype", :a_projectname => "projectname")
     @today_projecttype = args.a_projecttype
     @today_projectname = args.a_projectname
-    system %{cd "#{TODAY}"}
+    system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
     @today_start = get_timestamp
     @today_stop = 'stop'
     get_today_name
@@ -79,7 +79,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013 by ZoatWorks Software LLC, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA09".color(:cyan)
+  puts "by Roberto Nogueira - PA11".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
