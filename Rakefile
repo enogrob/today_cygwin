@@ -1,7 +1,7 @@
 ## Crafted (c) 2013 by ZoatWorks Software LLC.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA11
+## Version  : PA12
 ## Date     : 2014-01-03
 ## Project  : Project 2013 TODAY Automation - Brazil
 ## Reference: ruby 1.9.3p448 (2013-06-27) [x86_64-cygwin]
@@ -79,7 +79,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013 by ZoatWorks Software LLC, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA11".color(:cyan)
+  puts "by Roberto Nogueira - PA12".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
@@ -225,14 +225,22 @@ task :today_archive_unselect, [:a_todayname] do |t, args|
   today_data = YAML.load(File.open("#{TODAY_ARCHIVE}/#{@today_name}/#{TODAY_DATA_FILE}")) 
   @today_projectname = today_data['ProjectName'] || 'projectname'
   @today_name = today_data['TodayName'] || 'todayname'
-  system %{
+  if File.exists?("#{TODAY}/*.log") then
+  	system %{
     cd "#{TODAY}";
     cp *.log "#{TODAY_ARCHIVE}/#{@today_name}";
     ls -r1 *.log | tail +$((2)) | xargs rm;
     ls -r1 *.log | head -1 | xargs cp /dev/null;
     rm -f current_app;
     rm -f "#{@today_projectname}"
+  	}
+  else
+  system %{
+    cd "#{TODAY}";
+    rm -f current_app;
+    rm -f "#{@today_projectname}"
   }
+  end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
@@ -303,6 +311,7 @@ desc "TODAY cleanup directory"
 task :today_cleanup do
   puts "=> today_cleanup: cleaning TODAY directory...".bright
   puts
+  if File.exists?("#{TODAY}/*.log") then
   system %{
     cd "#{TODAY}";
     find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
@@ -310,6 +319,13 @@ task :today_cleanup do
     ls -r1 *.log | tail +$((2)) | xargs rm;
     ls -r1 *.log | head -1 | xargs cp /dev/null  
   }
+  else
+  	system %{
+    cd "#{TODAY}";
+    find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
+    find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-gemset' -not -name '.ruby-version' | xargs rm
+  	}
+  end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
