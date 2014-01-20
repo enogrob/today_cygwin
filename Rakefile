@@ -1,8 +1,8 @@
 ## Crafted (c) 2013 by ZoatWorks Software LLC.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA12
-## Date     : 2014-01-03
+## Version  : PA13
+## Date     : 2014-01-20
 ## Project  : Project 2013 TODAY Automation - Brazil
 ## Reference: ruby 1.9.3p448 (2013-06-27) [x86_64-cygwin]
 ## Rake     : rake (10.0.4)
@@ -37,7 +37,9 @@ task :today_start, [:a_projecttype, :a_projectname] do |t, args|
     args.with_defaults(:a_projecttype => "projecttype", :a_projectname => "projectname")
     @today_projecttype = args.a_projecttype
     @today_projectname = args.a_projectname
-    system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
+    if !File.exist?("#{TODAY}/#{@today_projectname}")
+    	system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
+  	end 
     @today_start = get_timestamp
     @today_stop = 'stop'
     get_today_name
@@ -62,12 +64,12 @@ end
 
 def load_today_data
     if !File.exist?("#{TODAY}/#{TODAY_DATA_FILE}")
-    puts "-- File: #{TODAY_DATA_FILE} do not exist !".color(:red)
-    puts
-    system %{rake --tasks}
-    puts
-    exit
-  end 
+    	puts "-- File: #{TODAY_DATA_FILE} do not exist !".color(:red)
+    	puts
+    	system %{rake --tasks}
+    	puts
+    	exit
+  	end 
   today_data = YAML.load(File.open("#{TODAY}/#{TODAY_DATA_FILE}"))
   @today_start = today_data['Start']
   @today_stop = today_data['Stop']
@@ -79,7 +81,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013 by ZoatWorks Software LLC, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA12".color(:cyan)
+  puts "by Roberto Nogueira - PA13".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
