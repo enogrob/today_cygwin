@@ -1,9 +1,9 @@
-## Crafted (c) 2013 by ZoatWorks Software LLC.
+## Crafted (c) 2013~14 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA14
-## Date     : 2014-01-23
-## Project  : Project 2013 TODAY Automation - Brazil
+## Version  : PA15
+## Date     : 2014-02-19
+## Project  : Project 2013~14 TODAY Automation - Brazil
 ## Reference: ruby 1.9.3p448 (2013-06-27) [x86_64-cygwin]
 ## Rake     : rake (10.0.4)
 ##
@@ -80,8 +80,8 @@ end
 
 desc "TODAY printint data"
 task :today_print do
-  puts "Crafted (C) 2013~14 by ZoatWorks Software LLC, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA14".color(:cyan)
+  puts "Crafted (C) 2013~14 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
+  puts "by Roberto Nogueira - PA15".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
@@ -130,6 +130,16 @@ task :today_archive  do
   Rake::Task['today_cleanup'].invoke
   puts "-- listing ARCHIVE directory...".color(:yellow)
   system %{cd "#{TODAY_ARCHIVE}";ls -dl "#{@today_name}"}
+  puts
+end
+
+desc "TODAY archive list"
+task :today_archive_list do 
+  puts "=> today_archive_list: list to TODAY_Archive directory...".bright
+  puts
+  puts "-- listing ARCHIVE directory...".color(:yellow)
+  puts
+  system %{cd "#{TODAY_ARCHIVE}";ls -la;cd "#{TODAY}"}
   puts
 end
 
