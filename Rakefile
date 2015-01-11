@@ -1,17 +1,18 @@
 ## Crafted (c) 2013 by ZoatWorks Software LLC.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA10
-## Date     : 2013-12-12
+## Version  : PA11
+## Date     : 2014-01-11
 ## Project  : Project 2013 TODAY Automation - Brazil
-## Reference: ruby 1.9.3p448 (2013-06-27) [x86_64-cygwin]
-## Rake     : rake (10.0.4)
+## Reference: ruby 2.0.0p598 (2014-11-13) [x86_64-cygwin]
+## Rake     : rake (10.3.2)
 ##
 ## Purpose  : Develop a Rake system in order to help TODAY management directory
 ##            for projects.
 
 require 'rake'
 require 'rainbow'
+require 'rainbow/ext/string' if RUBY_VERSION.to_f >= 2.0
 
 require 'yaml'
 
@@ -78,8 +79,8 @@ end
 
 desc "TODAY printint data"
 task :today_print do
-  puts "Crafted (C) 2013 by ZoatWorks Software LLC, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA09".color(:cyan)
+  puts "Crafted (C) 2013-2015 by ZoatWorks Software LLC, Brazil.".color(:cyan)
+  puts "by Roberto Nogueira - PA11".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
