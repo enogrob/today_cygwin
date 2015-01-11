@@ -1,4 +1,4 @@
-## Crafted (c) 2013 by ZoatWorks Software LLC.
+## Crafted (c) 2013~14 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
 ## Version  : PA11
@@ -38,7 +38,9 @@ task :today_start, [:a_projecttype, :a_projectname] do |t, args|
     args.with_defaults(:a_projecttype => "projecttype", :a_projectname => "projectname")
     @today_projecttype = args.a_projecttype
     @today_projectname = args.a_projectname
-    system %{cd "#{TODAY}"}
+    if !File.exist?("#{TODAY}/#{@today_projectname}")
+    	system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
+  	end 
     @today_start = get_timestamp
     @today_stop = 'stop'
     get_today_name
@@ -63,12 +65,12 @@ end
 
 def load_today_data
     if !File.exist?("#{TODAY}/#{TODAY_DATA_FILE}")
-    puts "-- File: #{TODAY_DATA_FILE} do not exist !".color(:red)
-    puts
-    system %{rake --tasks}
-    puts
-    exit
-  end 
+    	puts "-- File: #{TODAY_DATA_FILE} do not exist !".color(:red)
+    	puts
+    	system %{rake --tasks}
+    	puts
+    	exit
+  	end 
   today_data = YAML.load(File.open("#{TODAY}/#{TODAY_DATA_FILE}"))
   @today_start = today_data['Start']
   @today_stop = today_data['Stop']
@@ -129,6 +131,16 @@ task :today_archive  do
   Rake::Task['today_cleanup'].invoke
   puts "-- listing ARCHIVE directory...".color(:yellow)
   system %{cd "#{TODAY_ARCHIVE}";ls -dl "#{@today_name}"}
+  puts
+end
+
+desc "TODAY archive list"
+task :today_archive_list do 
+  puts "=> today_archive_list: list to TODAY_Archive directory...".bright
+  puts
+  puts "-- listing ARCHIVE directory...".color(:yellow)
+  puts
+  system %{cd "#{TODAY_ARCHIVE}";ls -la;cd "#{TODAY}"}
   puts
 end
 
@@ -226,14 +238,21 @@ task :today_archive_unselect, [:a_todayname] do |t, args|
   today_data = YAML.load(File.open("#{TODAY_ARCHIVE}/#{@today_name}/#{TODAY_DATA_FILE}")) 
   @today_projectname = today_data['ProjectName'] || 'projectname'
   @today_name = today_data['TodayName'] || 'todayname'
-  system %{
+  if !Dir.glob("#{TODAY}/*.log").empty? then
+    system %{
     cd "#{TODAY}";
     cp *.log "#{TODAY_ARCHIVE}/#{@today_name}";
-    ls -r1 *.log | tail +$((2)) | xargs rm;
-    ls -r1 *.log | head -1 | xargs cp /dev/null;
+    ls -r1 *.log | tail --lines=+2 | xargs rm;
     rm -f current_app;
     rm -f "#{@today_projectname}"
-  }
+    }
+  else
+    system %{
+    cd "#{TODAY}";
+    rm -f current_app;
+    rm -f "#{@today_projectname}"
+    }
+  end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
@@ -304,13 +323,20 @@ desc "TODAY cleanup directory"
 task :today_cleanup do
   puts "=> today_cleanup: cleaning TODAY directory...".bright
   puts
+  if !Dir.glob("#{TODAY}/*.log").empty? then
   system %{
     cd "#{TODAY}";
     find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
     find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-gemset' -not -name '.ruby-version' | xargs rm;
-    ls -r1 *.log | tail +$((2)) | xargs rm;
-    ls -r1 *.log | head -1 | xargs cp /dev/null  
+    ls -r1 *.log | tail --lines=+2 | xargs rm; 
   }
+  else
+    system %{
+    cd "#{TODAY}";
+    find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
+    find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-gemset' -not -name '.ruby-version' | xargs rm
+    }
+  end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
