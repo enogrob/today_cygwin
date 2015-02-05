@@ -1,8 +1,8 @@
 ## Crafted (c) 2013~14 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA11
-## Date     : 2014-01-11
+## Version  : PA12
+## Date     : 2015-02-05
 ## Project  : Project 2013 TODAY Automation - Brazil
 ## Reference: ruby 2.0.0p598 (2014-11-13) [x86_64-cygwin]
 ## Rake     : rake (10.3.2)
@@ -16,7 +16,7 @@ require 'rainbow/ext/string' if RUBY_VERSION.to_f >= 2.0
 
 require 'yaml'
 
-USERPATH="/home/" + ENV['USERNAME']
+USERPATH=ENV['HOME']
 TODAY_TEMPLATES="#{USERPATH}/TODAY_Templates"
 TODAY_ARCHIVE="#{USERPATH}/TODAY_Archive"
 
@@ -82,7 +82,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013-2015 by ZoatWorks Software LLC, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA11".color(:cyan)
+  puts "by Roberto Nogueira - PA12".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
