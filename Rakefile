@@ -1,10 +1,10 @@
 ## Crafted (c) 2013~2014 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA31
-## Date     : 2015-03-13
+## Version  : PA32
+## Date     : 2015-07-10
 ## Project  : Project 2013~2015 TODAY Automation - Brazil
-## Reference: ruby-2.1.2@global
+## Reference: ruby 2.2.2p95 (2015-04-13 revision 50295) [i386-cygwin]
 ##
 ## Purpose  : Develop a Rake system in order to help TODAY management directory
 ##            for projects.
@@ -13,6 +13,7 @@ require 'rake'
 require 'rainbow'
 require 'rainbow/ext/string' if RUBY_VERSION.to_f >= 2.0
 require 'yaml'
+require 'find'
 
 USERPATH=ENV['HOME']
 TODAY_TEMPLATES="#{USERPATH}/TODAY_Templates"
@@ -25,9 +26,9 @@ DROPBOX="#{USERPATH}/Dropbox/"
 
 TODAY_DATA_FILE="today_data.yaml"
 
-CMD_REGEX = /^\[\W\/\w+\]\$|^\w+>|^\w+@\w+>/
+CMD_REGEX = /^\[\W\/\w+\]\$|^\[local\]\w+#|^\[local\]\w+>|^\w+>|^\w+@\w+>|^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}>/
 
-CMD_REGEX2 = /(^\w+)>/
+CMD_REGEX2 = /^<\w+/
 
 desc "TODAY log directory"
 task :today_log  do
@@ -92,7 +93,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013~2015 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA31".color(:cyan)
+  puts "by Roberto Nogueira - PA32".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
@@ -370,4 +371,32 @@ task :today_cleanup do
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
+end
+
+desc "TODAY cmdslist from logs"
+task :today_cmdslist, [:a_logfilename] do |t, args|
+	puts "=> today_cmdlist: generationg cmdlist for the logs...".bright
+	puts
+	args.with_defaults(:a_logfilename => "")
+	logfilename = args.a_logfilename
+	cmdslist(logfilename)
+	puts
+end
+
+def cmdslist(logfilename)
+	Find.find("#{TODAY}") do |f|
+		if File.basename(f) =~ /\.log|\.txt/ 
+	    	if File.basename(f).include? logfilename
+ 				@log_file = f
+				File.open(@log_file, "r") do |file|
+				    lines = file.readlines
+				    lines.each_index do |i|
+        	    		if lines[i] =~ CMD_REGEX2  then
+    						puts lines[i].chop					
+    					end
+    				end
+    			end
+    		end
+    	end
+	end
 end
