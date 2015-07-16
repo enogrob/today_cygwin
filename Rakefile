@@ -2,7 +2,7 @@
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
 ## Version  : PA32
-## Date     : 2015-07-10
+## Date     : 2015-07-16
 ## Project  : Project 2013~2015 TODAY Automation - Brazil
 ## Reference: ruby 2.2.2p95 (2015-04-13 revision 50295) [i386-cygwin]
 ##
@@ -52,6 +52,23 @@ desc "TODAY start directory"
   @today_projecttype = args.a_projecttype.split.join('_')
   @today_projectname = args.a_projectname.split.join('_')
   system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
+  @today_start = get_timestamp
+  @today_stop = 'stop'
+  get_today_name
+  save_today_data
+  puts "-- contents of TODAY directory:".color(:yellow)
+  system %{ls -la "#{TODAY}/#{TODAY_DATA_FILE}"}
+  puts
+end
+
+desc "TODAY start clone directory"
+  task :today_clone, [:a_projecttype, :a_projectname] do |t, args|
+  puts "=> today_clone: starting clone TODAY directory...".bright
+  puts
+  args.with_defaults(:a_projecttype => "projecttype", :a_projectname => "projectname")
+  @today_projecttype = args.a_projecttype.split.join('_')
+  @today_projectname = args.a_projectname.split.join('_')
+  system %{cd "#{TODAY}"; git clone "https://github.com/enogrob/#{@today_projectname}.git"}
   @today_start = get_timestamp
   @today_stop = 'stop'
   get_today_name
