@@ -21,6 +21,7 @@ if [ "$TERM" != "dumb" ]; then
     alias tda='cd ~/TODAY_Archive;ls -st'
     alias gem='LANG="${LANG%%.*}.BINARY" gem '
     alias traceroute='tracert'
+    alias mate='e'
 else
     alias ll='ls -l'
     alias la='ls -A'
