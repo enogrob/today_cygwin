@@ -1,7 +1,5 @@
 unset PROMPT_COMMAND
 export PS1="\e[35;40m\033[1m\][\w]\\$\[\033[0m\] "
-alias ls="ls -FX"
-alias mate="e"
 alias h="history"
 set -o notify
 if [ "$TERM" != "dumb" ]; then
@@ -34,8 +32,25 @@ shopt -s checkwinsize
 shopt -s sourcepath
 shopt -s histappend
 
-export PATH=$PATH:/cygdrive/c/users/eronogu/Documents/_bin:/home/roberto.nogueira/moshell:/home/roberto.nogueira/bin
+export PATH=$PATH:/home/roberto.nogueira/moshell:/home/roberto.nogueira/bin
+
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+# last JDK 6 by Apple
+export JAVA_6_HOME='/cygdrive/c/program files/Java/jdk1.6.0_45'
+# latest JDK 7 by Oracle
+export JAVA_7_HOME='/cygdrive/c/program files/Java/jdk1.7.0_79'
+# latest preview JDK 8 by Oracle
+export JAVA_8_HOME='/cygdrive/c/program files/Java/jdk1.8.0_51'
+ 
+# default JDK is  7
+export JAVA_HOME=$JAVA_7_HOME
+export PATH_ORIG=$PATH
+export PATH=$JAVA_HOME/bin:$PATH
+ 
+# Make aliases to switch from one to another
+alias java6='export JAVA_HOME=$JAVA_6_HOME;export PATH=$JAVA_HOME/bin:$PATH_ORIG'
+alias java7='export JAVA_HOME=$JAVA_7_HOME;export PATH=$JAVA_HOME/bin:$PATH_ORIG'
+alias java8='export JAVA_HOME=$JAVA_8_HOME;export PATH=$JAVA_HOME/bin:$PATH_ORIG'
 
 cd ~/TODAY
-
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
