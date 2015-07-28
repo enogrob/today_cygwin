@@ -1,8 +1,8 @@
 ## Crafted (c) 2013~2014 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA32
-## Date     : 2015-07-16
+## Version  : PA33
+## Date     : 2015-07-28
 ## Project  : Project 2013~2015 TODAY Automation - Brazil
 ## Reference: ruby 2.2.2p95 (2015-04-13 revision 50295) [i386-cygwin]
 ##
@@ -110,7 +110,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013~2015 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA32".color(:cyan)
+  puts "by Roberto Nogueira - PA33".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
@@ -381,10 +381,15 @@ task :today_cleanup do
   system %{
   cd "#{TODAY}";
   find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
-  find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-*' | xargs rm;
-  ls -r1 *.log | tail +$((2)) | xargs rm;
-  ls -r1 *.log | head -1 | xargs cp /dev/null  
+  find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-*' | xargs rm; 
   }
+  if File.exist?("#{TODAY}/*.log")
+    system %{
+  	cd "#{TODAY}";
+  	ls -r1 *.log | tail +$((2)) | xargs rm;
+  	ls -r1 *.log | head -1 | xargs cp /dev/null  
+  	}
+  end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
