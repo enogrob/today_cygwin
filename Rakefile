@@ -470,12 +470,17 @@ task :today_cleanup do
   puts "=> today_cleanup: cleaning TODAY directory...".bright
   puts
   system %{
-  cd "#{TODAY}";
-  find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
-  find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-*' | xargs rm;
-  ls -r1 *.log | tail +$((2)) | xargs rm;
-  ls -r1 *.log | head -1 | xargs cp /dev/null  
+    cd "#{TODAY}";
+    find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
+    find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-*' | xargs rm 
   }
+  if !Dir.glob("#{TODAY}/*.log").empty?
+    system %{
+    cd "#{TODAY}";
+    ls -r1 *.log | tail -2 | xargs rm;
+    ls -r1 *.log | head -1 | xargs cp /dev/null  
+    }
+  end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
