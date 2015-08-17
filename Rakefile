@@ -2,9 +2,9 @@
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
 ## Version  : PA33
-## Date     : 2015-07-28
+## Date     : 2015-08-16
 ## Project  : Project 2013~2015 TODAY Automation - Brazil
-## Reference: ruby 2.2.2p95 (2015-04-13 revision 50295) [i386-cygwin]
+## Reference: ruby-2.1.2@global
 ##
 ## Purpose  : Develop a Rake system in order to help TODAY management directory
 ##            for projects.
@@ -13,22 +13,25 @@ require 'rake'
 require 'rainbow'
 require 'rainbow/ext/string' if RUBY_VERSION.to_f >= 2.0
 require 'yaml'
-require 'find'
 
 USERPATH=ENV['HOME']
 TODAY_TEMPLATES="#{USERPATH}/TODAY_Templates"
-TODAY_ARCHIVE="#{USERPATH}/TODAY_Archive"
-
 TODAY="#{USERPATH}/TODAY"
-CLOUD="#{USERPATH}/Google Drive/"
+
+LOCAL="#{USERPATH}/TODAY_Archive"
+DROPBOX="#{USERPATH}/Dropbox/TODAY_Archive"
+GOOGLEDRIVE="#{USERPATH}/Google Drive/TODAY_Archive"
 CHROMEAPPS="#{USERPATH}/Dropbox/Projects_CHROME"
-DROPBOX="#{USERPATH}/Dropbox/"
+ARCHIVE="#{USERPATH}/ARCHIVE"
+
+CLOUD=GOOGLEDRIVE
+TODAY_ARCHIVE=ARCHIVE
 
 TODAY_DATA_FILE="today_data.yaml"
 
-CMD_REGEX = /^\[\W\/\w+\]\$|^\[local\]\w+#|^\[local\]\w+>|^\w+>|^\w+@\w+>|^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}>/
+CMD_REGEX = /^\[\W\/\w+\]\$|^\w+>|^\w+@\w+>/
 
-CMD_REGEX2 = /^<\w+/
+CMD_REGEX2 = /(^\w+)>/
 
 desc "TODAY log directory"
 task :today_log  do
@@ -188,6 +191,94 @@ task :today_archive_list  do
   puts
   system %{cd "#{TODAY_ARCHIVE}";ls -la;cd "#{TODAY}"}
   puts
+end
+
+desc "TODAY archive Conf"
+task :today_archive_conf  do
+  puts "=> today_archive_conf: Listing ARCHIVE configuration...".bright
+  puts
+  puts "-- LOCAL  : #{LOCAL}".color(:yellow)
+  puts "-- CLOUD  : #{CLOUD}".color(:yellow)
+  puts
+  if !File.exist?("#{USERPATH}/ARCHIVE")
+    puts "-- File: #{USERPATH}/ARCHIVE do not exist !".color(:red)
+    puts
+    exit
+  else  
+    puts "-- ARCHIVE: #{ARCHIVE}".bright
+    system %{cd "#{USERPATH}";ls -l ARCHIVE;cd "#{TODAY}"}
+    puts
+  end
+end
+
+task :today_archive_cloud  do
+  puts "=> today_archive_cloud: Configuring to CLOUD...".bright
+  system %{
+    cd "#{USERPATH}";
+    rm ARCHIVE;
+    touch ARCHIVE;
+    ln -sf "#{CLOUD}" ARCHIVE
+  }
+  system %{cd "#{USERPATH}";ls -l ARCHIVE}
+  puts
+  Rake::Task['today_archive_conf'].invoke
+end
+
+task :today_archive_local  do
+  puts "=> today_archive_local: Configuring to LOCAL...".bright
+  system %{
+    cd "#{USERPATH}";
+    rm ARCHIVE;
+    touch ARCHIVE;
+    ln -sf "#{LOCAL}" ARCHIVE
+  }
+  system %{cd "#{USERPATH}";ls -l ARCHIVE}
+  puts
+  Rake::Task['today_archive_conf'].invoke
+end
+
+desc "TODAY Cloud Conf"
+task :today_cloud_conf  do
+  puts "=> today_cloud_conf: Listing CLOUD configuration...".bright
+  puts
+  puts "-- DROPBOX    : #{DROPBOX}".color(:yellow)
+  puts "-- GOOGLEDRIVE: #{GOOGLEDRIVE}".color(:yellow)
+  puts
+  if !File.exist?("#{USERPATH}/ARCHIVE")
+    puts "-- File: #{USERPATH}/ARCHIVE do not exist !".color(:red)
+    puts
+    exit
+  else  
+    puts "-- ARCHIVE: #{ARCHIVE}".bright
+    system %{cd "#{USERPATH}";ls -l ARCHIVE;cd "#{TODAY}"}
+    puts
+  end
+end
+
+task :today_cloud_dropbox  do
+  puts "=> today_cloud_dropbox: Configuring to DROPBOX...".bright
+  system %{
+    cd "#{USERPATH}";
+    rm ARCHIVE;
+    touch ARCHIVE;
+    ln -sf "#{DROPBOX}" ARCHIVE
+  }
+  system %{cd "#{USERPATH}";ls -l ARCHIVE}
+  puts
+  Rake::Task['today_cloud_conf'].invoke
+end
+
+task :today_cloud_googledrive  do
+  puts "=> today_cloud_googledrive: Configuring to GOOGLEDRIVE...".bright
+  system %{
+    cd "#{USERPATH}";
+    rm ARCHIVE;
+    touch ARCHIVE;
+    ln -sf "#{GOOGLEDRIVE}" ARCHIVE
+  }
+  system %{cd "#{USERPATH}";ls -l ARCHIVE}
+  puts
+  Rake::Task['today_cloud_conf'].invoke
 end
 
 desc "TODAY archive fallback"
@@ -381,44 +472,11 @@ task :today_cleanup do
   system %{
   cd "#{TODAY}";
   find . -mindepth 1 -maxdepth 1 -type d | xargs -t rm -rf;
-  find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-*' | xargs rm; 
+  find "#{TODAY}" -type f -not -name '*.log' -not -name '.DS_Store' -not -name '.ruby-*' | xargs rm;
+  ls -r1 *.log | tail +$((2)) | xargs rm;
+  ls -r1 *.log | head -1 | xargs cp /dev/null  
   }
-  if !Dir.glob("#{TODAY}/*.log").empty?
-    system %{
-  	cd "#{TODAY}";
-  	ls -r1 *.log | tail -2 | xargs rm;
-  	ls -r1 *.log | head -1 | xargs cp /dev/null  
-  	}
-  end
   puts "-- contents of TODAY directory:".color(:yellow)
   system %{ls -la "#{TODAY}"}
   puts
-end
-
-desc "TODAY cmdslist from logs"
-task :today_cmdslist, [:a_logfilename] do |t, args|
-	puts "=> today_cmdlist: generationg cmdlist for the logs...".bright
-	puts
-	args.with_defaults(:a_logfilename => "")
-	logfilename = args.a_logfilename
-	cmdslist(logfilename)
-	puts
-end
-
-def cmdslist(logfilename)
-	Find.find("#{TODAY}") do |f|
-		if File.basename(f) =~ /\.log|\.txt/ 
-	    	if File.basename(f).include? logfilename
- 				@log_file = f
-				File.open(@log_file, "r") do |file|
-				    lines = file.readlines
-				    lines.each_index do |i|
-        	    		if lines[i] =~ CMD_REGEX2  then
-    						puts lines[i].chop					
-    					end
-    				end
-    			end
-    		end
-    	end
-	end
 end
