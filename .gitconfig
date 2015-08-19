@@ -1,0 +1,12 @@
+[user]
+name = Roberto Nogueira
+email = enogrob@gmail.com
+[push]
+default = simple
+[diff]
+tool = examdiff
+guitool = examdiff
+[difftool "examdiff"]
+cmd = examdiff \"$(cygpath -wla $LOCAL)\" \"$(cygpath -wla $REMOTE)\" /nh
+[difftool]
+prompt = false
