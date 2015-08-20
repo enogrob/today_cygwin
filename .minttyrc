@@ -1,0 +1,8 @@
+BoldAsFont=no
+RightClickAction=paste
+Columns=147
+Rows=38
+Font=Consolas for Powerline FixedD
+FontHeight=11
+CursorType=underscore
+CursorColour=255,128,255
