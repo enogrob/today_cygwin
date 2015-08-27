@@ -55,6 +55,21 @@ desc "TODAY start directory"
   @today_projecttype = args.a_projecttype.split.join('_')
   @today_projectname = args.a_projectname.split.join('_')
   system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
+  if @today_projecttype.include? 'WSMD' then
+  	system %{cd "#{TODAY}/#{@today_projectname};
+  	         touch status_data.txt;
+  	         touch description.txt;
+  	         touch trouble_effects.txt;
+  	         touch trouble_description.txt;
+  	         touch plex_solution.txt;
+             touch asa_solution.txt;
+             touch test_instruction.txt;
+             touch load_spac_criteria.txt;
+             touch enclosures.txt;
+             touch notebook.txt;
+             touch test_data_and_cover_page.txt
+            }
+  end
   @today_start = get_timestamp
   @today_stop = 'stop'
   get_today_name
