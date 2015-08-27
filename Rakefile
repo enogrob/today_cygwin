@@ -1,8 +1,8 @@
 ## Crafted (c) 2013~2014 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA33
-## Date     : 2015-08-16
+## Version  : PA34
+## Date     : 2015-08-27
 ## Project  : Project 2013~2015 TODAY Automation - Brazil
 ## Reference: ruby-2.1.2@global
 ##
@@ -61,13 +61,13 @@ desc "TODAY start directory"
   	         touch description.txt;
   	         touch trouble_effects.txt;
   	         touch trouble_description.txt;
+  	         touch test_instruction.txt;
   	         touch plex_solution.txt;
              touch asa_solution.txt;
-             touch test_instruction.txt;
              touch load_spac_criteria.txt;
+             touch test_data_and_cover_page.txt;
              touch enclosures.txt;
-             touch notebook.txt;
-             touch test_data_and_cover_page.txt
+             touch notebook.txt
             }
   end
   @today_start = get_timestamp
@@ -128,7 +128,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013~2015 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA33".color(:cyan)
+  puts "by Roberto Nogueira - PA34".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright

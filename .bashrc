@@ -21,6 +21,8 @@ if [ "$TERM" != "dumb" ]; then
     alias gem='LANG="${LANG%%.*}.BINARY" gem '
     alias traceroute='tracert'
     alias mate='e'
+    alias amcsts='git status -s'
+    alias amclog='git log --pretty=oneline' 
 else
     alias ll='ls -l'
     alias la='ls -A'

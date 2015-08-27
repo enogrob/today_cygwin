@@ -1,34 +1,29 @@
 [user]
-  name = Roberto Nogueira
-  email = enogrob@gmail.com
-  
+	name = Roberto Nogueira
+	email = enogrob@gmail.com
 [push]
-  default = simple
-  
+	default = simple
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	ui = true
+	pager = true
+[color "status"]
+	added = green
+	changed = red bold
+	untracked = yellow
+[color "branch"]
+	remote = yellow
+[merge]
+	tool = kdiff3
+[core]
+	editor = \"C:/Program Files/GitExtensions/GitExtensions.exe\" fileeditor
 [diff]
   tool = examdiff
   guitool = examdiff
-  
 [difftool "examdiff"]
   cmd = examdiff \"$(cygpath -wla $LOCAL)\" \"$(cygpath -wla $REMOTE)\" /nh
-  
 [difftool]
   prompt = false
-  
-[color]
-  diff = auto
-  status = auto
-  branch = auto
-  interactive = auto
-  ui = true
-  pager = true
-  
-[color "status"]
-  added = green
-  changed = red bold
-  untracked = yellow
-
-[color "branch"]
-  remote = yellow
-
-  
