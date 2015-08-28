@@ -23,6 +23,7 @@ if [ "$TERM" != "dumb" ]; then
     alias mate='e'
     alias amcsts='git status -s'
     alias amclog='git log --pretty=oneline' 
+    alias amcnew='touch status_data.txt;touch description.txt;touch trouble_effects.txt;touch trouble_description.txt;touch test_instruction.txt;touch plex_solution.txt;touch asa_solution.txt;touch load_spac_criteria.txt;touch test_data_and_cover_page.txt;touch enclosures.txt;touch notebook.txt'
 else
     alias ll='ls -l'
     alias la='ls -A'

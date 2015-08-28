@@ -21,9 +21,11 @@
 [core]
 	editor = \"C:/Program Files/GitExtensions/GitExtensions.exe\" fileeditor
 [diff]
-  tool = examdiff
-  guitool = examdiff
+	tool = examdiff
+	guitool = examdiff
 [difftool "examdiff"]
-  cmd = examdiff \"$(cygpath -wla $LOCAL)\" \"$(cygpath -wla $REMOTE)\" /nh
+	cmd = examdiff \"$(cygpath -wla $LOCAL)\" \"$(cygpath -wla $REMOTE)\" /nh
 [difftool]
-  prompt = false
+	prompt = false
+[mergetool "kdiff3"]
+	path = C:/Program Files/KDiff3/kdiff3.exe
