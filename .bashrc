@@ -39,8 +39,7 @@ shopt -s histappend
 
 export PATH=$PATH:/home/roberto.nogueira/moshell:/home/roberto.nogueira/bin
 
-# Add RVM to PATH for scripting
-export PATH=$PATH:$HOME/.rvm/bin 
+export PATH=$PATH:/cygdrive/c/apa 
 
 # latest JDK 7 by Oracle
 export JAVA_6_HOME='/cygdrive/c/program files/Java/jdk1.6.0_45'
