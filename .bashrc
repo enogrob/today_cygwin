@@ -24,6 +24,7 @@ if [ "$TERM" != "dumb" ]; then
     alias gitsts='git status -s'
     alias gitlog='git log --pretty=oneline' 
     alias amcnew='touch status_data.txt;touch description.txt;touch trouble_effects.txt;touch trouble_description.txt;touch test_instruction.txt;touch plex_solution.txt;touch asa_solution.txt;touch load_spac_criteria.txt;touch test_data_and_cover_page.txt;touch enclosures.txt;touch notebook.txt'
+    alias tshark='tshark -V -r'
 else
     alias ll='ls -l'
     alias la='ls -A'
@@ -38,7 +39,7 @@ shopt -s sourcepath
 shopt -s histappend
 
 export PATH=$PATH:/home/roberto.nogueira/moshell:/home/roberto.nogueira/bin
-export PATH=$PATH:/cygdrive/c/apa/bin:/cygdrive/c/ProgramData/chocolatey/lib/Elixir/bin
+export PATH=$PATH:/cygdrive/c/apa/bin:/cygdrive/c/ProgramData/chocolatey/lib/Elixir/bin:'/cygdrive/c/Program Files/Wireshark'
 
 # latest JDK 7 by Oracle
 export JAVA_6_HOME='/cygdrive/c/program files/Java/jdk1.6.0_45'
