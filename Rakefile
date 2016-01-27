@@ -1,9 +1,9 @@
 ## Crafted (c) 2013~2014 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA37
-## Date     : 2015-12-22
-## Project  : Project 2013~2015 TODAY Automation - Brazil
+## Version  : PA38
+## Date     : 2016-01-27
+## Project  : Project 2013~2016 TODAY Automation - Brazil
 ## Reference: ruby-2.1.2@global
 ##
 ## Purpose  : Develop a Rake system in order to help TODAY management directory
@@ -56,7 +56,8 @@ desc "TODAY start directory"
   @today_projectname = args.a_projectname.split.join('_')
   system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
   if ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'Lift')) or 
-     ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'New')) 
+     ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'New')) or 
+     ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'DC1')) 
   then
   	system %{cd "#{TODAY}/#{@today_projectname}";
   	         touch status_data.txt;
@@ -129,8 +130,8 @@ end
 
 desc "TODAY printint data"
 task :today_print do
-  puts "Crafted (C) 2013~2015 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA37".color(:cyan)
+  puts "Crafted (C) 2013~2016 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
+  puts "by Roberto Nogueira - PA38".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
