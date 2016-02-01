@@ -1,8 +1,8 @@
 ## Crafted (c) 2013~2014 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA39
-## Date     : 2016-01-28
+## Version  : PA40
+## Date     : 2016-02-01
 ## Project  : Project 2013~2016 TODAY Automation - Brazil
 ## Reference: ruby-2.1.2@global
 ##
@@ -58,21 +58,24 @@ desc "TODAY start directory"
   if ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'Lift')) or 
      ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'New')) or 
      ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'DC1')) or 
-     ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'DC2')) 
-  then
-  	system %{cd "#{TODAY}/#{@today_projectname}";
-  	         touch status_data.txt;
-  	         touch description.txt;
-  	         touch trouble_effects.txt;
-  	         touch trouble_description.txt;
-  	         touch test_instruction.txt;
-  	         touch plex_solution.txt;
+     ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'DC2')) then
+    system %{cd "#{TODAY}/#{@today_projectname}";
+             touch status_data.txt;
+             touch description.txt;
+             touch trouble_effects.txt;
+             touch trouble_description.txt;
+             touch test_instruction.txt;
+             touch plex_solution.txt;
              touch asa_solution.txt;
              touch load_spac_criteria.txt;
              touch test_data_and_cover_page.txt;
              touch enclosures.txt;
              touch notebook.txt
             }
+  elsif ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'Verification')) then
+    system %{cd "#{TODAY}/#{@today_projectname}";
+           touch "#{@today_projectname.split('_')[0]-AMC00.txt}"`
+          }
   end
   @today_start = get_timestamp
   @today_stop = 'stop'
@@ -132,7 +135,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013~2016 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA39".color(:cyan)
+  puts "by Roberto Nogueira - PA40".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
