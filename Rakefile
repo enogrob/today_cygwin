@@ -1,7 +1,7 @@
 ## Crafted (c) 2013~2014 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA40
+## Version  : PA41
 ## Date     : 2016-02-01
 ## Project  : Project 2013~2016 TODAY Automation - Brazil
 ## Reference: ruby-2.1.2@global
@@ -48,12 +48,13 @@ end
 task :default => ["today_print"]
 
 desc "TODAY start directory"
-  task :today_start, [:a_projecttype, :a_projectname] do |t, args|
+  task :today_start, [:a_projecttype, :a_projectname, :a_parameter] do |t, args|
   puts "=> today_start: starting TODAY directory...".bright
   puts
-  args.with_defaults(:a_projecttype => "projecttype", :a_projectname => "projectname")
+  args.with_defaults(:a_projecttype => "projecttype", :a_projectname => "projectname", :a_parameter => "parameter")
   @today_projecttype = args.a_projecttype.split.join('_')
   @today_projectname = args.a_projectname.split.join('_')
+  @today_parameter = args.a_parameter
   system %{cd "#{TODAY}"; mkdir #{@today_projectname}}
   if ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'Lift')) or 
      ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'New')) or 
@@ -72,10 +73,14 @@ desc "TODAY start directory"
              touch enclosures.txt;
              touch notebook.txt
             }
-  elsif ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'Verification')) then
-    system %{cd "#{TODAY}/#{@today_projectname}";
-           touch "#{@today_projectname.split('_')[0]-AMC00.txt}"`
-          }
+  elsif ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'Reuse')) then
+    feature = @today_projectname.split('_')[0]
+    @today_parameter = @today_parameter.split
+	  @today_parameter.each do |parameter|
+        system %{cd "#{TODAY}/#{@today_projectname}";
+                 touch "#{feature}-#{parameter}.txt"
+        }
+	  end
   end
   @today_start = get_timestamp
   @today_stop = 'stop'
@@ -135,7 +140,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013~2016 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA40".color(:cyan)
+  puts "by Roberto Nogueira - PA41".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
