@@ -1,8 +1,8 @@
 ## Crafted (c) 2013~2014 by ZoatWorks Software LTDA.
 ## Prepared : Roberto Nogueira
 ## File     : Rakefile
-## Version  : PA41
-## Date     : 2016-02-01
+## Version  : PA42
+## Date     : 2016-02-02
 ## Project  : Project 2013~2016 TODAY Automation - Brazil
 ## Reference: ruby-2.1.2@global
 ##
@@ -81,6 +81,8 @@ desc "TODAY start directory"
                  touch "#{feature}-#{parameter}.txt"
         }
 	  end
+  elsif ((@today_projecttype.include? 'WSMD') and (@today_projectname.include? 'Verification')) then
+    	system %{cd "#{TODAY_TEMPLATES}/TEMPLATES_Verification"; cp * "#{TODAY}/#{@today_projectname}"}
   end
   @today_start = get_timestamp
   @today_stop = 'stop'
@@ -140,7 +142,7 @@ end
 desc "TODAY printint data"
 task :today_print do
   puts "Crafted (C) 2013~2016 by ZoatWorks Software LTDA, Brazil.".color(:cyan)
-  puts "by Roberto Nogueira - PA41".color(:cyan)
+  puts "by Roberto Nogueira - PA42".color(:cyan)
   puts
   load_today_data
   puts "=> today_print: printing ricc data...".bright
