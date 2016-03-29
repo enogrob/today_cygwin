@@ -19,7 +19,7 @@
 [merge]
 	tool = kdiff3
 [core]
-	editor = \"C:/Program Files/Notepad++/notepad++.exe\" -multiInst -nosession
+	editor = \"C:/Program Files/Notepad++/notepad++.exe\" -multiInst -nosession -notabbar -nosession -noPlugin
 [diff]
 	tool = examdiff
 	guitool = examdiff
